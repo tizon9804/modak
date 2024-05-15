@@ -1,12 +1,30 @@
 package main
 
-import "modak/notification"
+import (
+	"fmt"
+	"modak/notification"
+)
 
 func main() {
-	service := notification.NewService()
-	service.Send("news", "user", "news 1")
-	service.Send("news", "user", "news 2")
-	service.Send("news", "user", "news 3")
-	service.Send("news", "another user", "news 1")
-	service.Send("update", "user", "update 1")
+	service := notification.NewService(notification.NewRateLimiter())
+	err := service.Send("News", "user1", "news 1")
+	if err != nil {
+		fmt.Println(err.Error())
+	}
+	err = service.Send("News", "user1", "news 2")
+	if err != nil {
+		fmt.Println(err.Error())
+	}
+	err = service.Send("News", "user1", "news 3")
+	if err != nil {
+		fmt.Println(err.Error())
+	}
+	err = service.Send("News", "user2", "news 1")
+	if err != nil {
+		fmt.Println(err.Error())
+	}
+	err = service.Send("Marketing", "user1", "update 1")
+	if err != nil {
+		fmt.Println(err.Error())
+	}
 }
